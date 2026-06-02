@@ -1,0 +1,177 @@
+[
+  {
+    "id": "skitarii-rangers",
+    "name": "Skitarii Rangers",
+    "faction": "Adeptus Mechanicus",
+    "keywords": ["Infantry", "Skitarii", "Core"],
+    "points": 130,
+    "base_stats": {
+      "movement": "6\"",
+      "toughness": 3,
+      "save": "4+",
+      "wounds": 1,
+      "leadership": "6+",
+      "oc": 2,
+      "bs": "3+",
+      "ws": "4+"
+    },
+    "weapons": [
+      {
+        "name": "Galvanic rifle",
+        "weapon_type": "ranged",
+        "range": "30\"",
+        "attacks": 2,
+        "skill": "3+",
+        "strength": 4,
+        "ap": 0,
+        "damage": 1,
+        "keywords": ["Rapid Fire 1"]
+      },
+      {
+        "name": "Arc rifle",
+        "weapon_type": "ranged",
+        "range": "30\"",
+        "attacks": 1,
+        "skill": "3+",
+        "strength": 8,
+        "ap": -2,
+        "damage": 2,
+        "keywords": ["Rapid Fire 1", "Anti-Vehicle 4+"]
+      },
+      {
+        "name": "Close combat weapon",
+        "weapon_type": "melee",
+        "range": null,
+        "attacks": 1,
+        "skill": "4+",
+        "strength": 3,
+        "ap": 0,
+        "damage": 1,
+        "keywords": []
+      }
+    ],
+    "abilities": [
+      {
+        "name": "Grounded Advancements",
+        "description": "Each time this unit shoots, it can target one enemy unit with Overwatch, even if it already shot."
+      },
+      {
+        "name": "Bionics",
+        "description": "Each time a model would lose a wound to a mortal wound, roll one D6: on a 5+, that wound is ignored."
+      }
+    ]
+  },
+  {
+    "id": "skitarii-vanguard",
+    "name": "Skitarii Vanguard",
+    "faction": "Adeptus Mechanicus",
+    "keywords": ["Infantry", "Skitarii", "Core"],
+    "points": 130,
+    "base_stats": {
+      "movement": "6\"",
+      "toughness": 3,
+      "save": "4+",
+      "wounds": 1,
+      "leadership": "6+",
+      "oc": 2,
+      "bs": "3+",
+      "ws": "4+"
+    },
+    "weapons": [
+      {
+        "name": "Radium carbine",
+        "weapon_type": "ranged",
+        "range": "18\"",
+        "attacks": 3,
+        "skill": "3+",
+        "strength": 3,
+        "ap": 0,
+        "damage": 1,
+        "keywords": ["Rad 1"]
+      },
+      {
+        "name": "Arc maul",
+        "weapon_type": "melee",
+        "range": null,
+        "attacks": 2,
+        "skill": "4+",
+        "strength": 6,
+        "ap": -1,
+        "damage": 2,
+        "keywords": ["Anti-Vehicle 4+"]
+      }
+    ],
+    "abilities": [
+      {
+        "name": "Rad-saturation",
+        "description": "While an enemy unit is within Engagement Range, subtract 1 from the Toughness of models in that unit."
+      },
+      {
+        "name": "Bionics",
+        "description": "Each time a model would lose a wound to a mortal wound, roll one D6: on a 5+, that wound is ignored."
+      }
+    ]
+  },
+  {
+    "id": "onager-dunecrawler",
+    "name": "Onager Dunecrawler",
+    "faction": "Adeptus Mechanicus",
+    "keywords": ["Vehicle", "Walker", "Questor Imperialis"],
+    "points": 115,
+    "base_stats": {
+      "movement": "8\"",
+      "toughness": 9,
+      "save": "3+",
+      "wounds": 11,
+      "leadership": "6+",
+      "oc": 3,
+      "bs": "3+",
+      "ws": "4+"
+    },
+    "weapons": [
+      {
+        "name": "Neutron laser",
+        "weapon_type": "ranged",
+        "range": "48\"",
+        "attacks": 3,
+        "skill": "3+",
+        "strength": 14,
+        "ap": -4,
+        "damage": "D6+2",
+        "keywords": ["Blast", "Devastating Wounds"]
+      },
+      {
+        "name": "Cognis heavy stubber",
+        "weapon_type": "ranged",
+        "range": "36\"",
+        "attacks": 3,
+        "skill": "3+",
+        "strength": 4,
+        "ap": 0,
+        "damage": 1,
+        "keywords": ["Sustained Hits 1"]
+      },
+      {
+        "name": "Armoured hull",
+        "weapon_type": "melee",
+        "range": null,
+        "attacks": 3,
+        "skill": "4+",
+        "strength": 6,
+        "ap": 0,
+        "damage": 1,
+        "keywords": []
+      }
+    ],
+    "abilities": [
+      {
+        "name": "Broad Spectrum Data-Tether",
+        "description": "Once per battle, in your Command phase, until the start of your next Command phase, friendly Skitarii Core units within 6\" can re-roll Leadership tests."
+      },
+      {
+        "name": "Ominspex",
+        "description": "Each time this model makes a ranged attack at a target more than 12\" away, the opponent cannot use Stratagems to improve that unit's saving throw."
+      }
+    ]
+  }
+]

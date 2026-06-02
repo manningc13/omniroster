@@ -1,0 +1,11 @@
+{
+  "name": "cogitator",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "npm run build:engine && npm -C app run dev",
+    "build": "npm run build:engine && npm -C app run build",
+    "build:engine": "wasm-pack build engine --target web --out-dir ../app/src/engine",
+    "preview": "npm -C app run preview"
+  }
+}
