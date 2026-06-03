@@ -1,4 +1,4 @@
-# Cogitator
+# Omniroster
 
 A Warhammer 40,000 list builder for Adeptus Mechanicus with a dynamic rules engine — stat cards update live based on Doctrina Imperatives, stratagems, and other per-turn choices.
 
@@ -43,7 +43,7 @@ cd engine && cargo test
 ## Project structure
 
 ```
-cogitator/
+omniroster/
 ├── engine/               # Rust rules engine → compiled to WASM
 │   └── src/
 │       ├── lib.rs        # WASM bindings (public API)
@@ -81,10 +81,10 @@ cogitator/
 ```bash
 # On your VPS (Ubuntu)
 sudo apt install nginx
-sudo mkdir -p /var/www/cogitator
-sudo chown $USER:$USER /var/www/cogitator
-sudo cp nginx.conf /etc/nginx/sites-available/cogitator
-sudo ln -s /etc/nginx/sites-available/cogitator /etc/nginx/sites-enabled/
+sudo mkdir -p /var/www/omniroster
+sudo chown $USER:$USER /var/www/omniroster
+sudo cp nginx.conf /etc/nginx/sites-available/omniroster
+sudo ln -s /etc/nginx/sites-available/omniroster /etc/nginx/sites-enabled/
 sudo nginx -t && sudo systemctl reload nginx
 ```
 
