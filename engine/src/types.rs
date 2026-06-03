@@ -36,6 +36,22 @@ impl StatValue {
             _ => self.clone(),
         }
     }
+
+    /// Add inches to a movement value stored as r#"N""# (e.g. "6\"" → "8\"").
+    /// Matches both Roll and Text variants because serde's untagged enum always
+    /// deserialises JSON strings into Roll first (Text is never reached via JSON).
+    pub fn add_movement(&self, amount: i32) -> StatValue {
+        let s = match self {
+            StatValue::Roll(s) | StatValue::Text(s) => s,
+            _ => return self.clone(),
+        };
+        if let Some(stripped) = s.strip_suffix('"') {
+            if let Ok(n) = stripped.parse::<i32>() {
+                return StatValue::Text(format!("{}\"", n + amount));
+            }
+        }
+        self.clone()
+    }
 }
 
 /// Base unit profile as loaded from JSON data.
@@ -99,6 +115,12 @@ pub struct Ability {
 pub enum Modifier {
     /// Adeptus Mechanicus Doctrina Imperatives
     DoctrinaImperative { doctrina: Doctrina },
+    /// Haloscreed Battle Clade per-turn enhancement for designated Halo Override units
+    HaloscreedEnhancement {
+        enhancement: HaloscreedEnhancement,
+        /// IDs of units currently holding the Halo Override keyword
+        unit_ids: Vec<String>,
+    },
     /// A stratagem applied to a specific unit
     Stratagem { stratagem_id: String, unit_id: String },
     /// Damage degradation threshold crossed (vehicles)
@@ -108,10 +130,20 @@ pub enum Modifier {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Doctrina {
-    Protector,   // BS +1 for Skitarii
-    Conqueror,   // WS +1 for Skitarii
-    EliminationVolley, // Rapid Fire weapons double shots
-    DataPsalmEnrichment, // Wound on 6+ regardless of Toughness
+    Protector,            // BS +1 for Skitarii
+    Conqueror,            // WS +1 for Skitarii
+    EliminationVolley,    // Rapid Fire weapons double shots
+    DataPsalmEnrichment,  // Wound on 6+ regardless of Toughness
+}
+
+/// Haloscreed Battle Clade — Noospheric Transference per-turn options.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum HaloscreedEnhancement {
+    ElectromotiveEnergisation, // +2" Move
+    MicroactuatorBracing,      // +1 Toughness
+    PredationProtocols,        // Can Advance and declare a Charge
+    MutedServomotors,          // Stealth (cannot be targeted from >12")
 }
 
 /// The fully resolved stat card for a unit after all modifiers are applied.
@@ -136,6 +168,7 @@ pub struct StatChanges {
     pub ws_changed: bool,
     pub movement_changed: bool,
     pub toughness_changed: bool,
+    pub damaged: bool,
 }
 
 /// A weapon after modifier resolution, with change flags for the UI.

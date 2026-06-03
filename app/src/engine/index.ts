@@ -9,6 +9,12 @@ export async function resolveUnit(
   modifiers: Modifier[],
 ): Promise<ResolvedUnit> {
   await ready;
-  const json = resolve_unit(JSON.stringify(profile), JSON.stringify(modifiers));
-  return JSON.parse(json) as ResolvedUnit;
+  try {
+    const json = resolve_unit(JSON.stringify(profile), JSON.stringify(modifiers));
+    return JSON.parse(json) as ResolvedUnit;
+  } catch (err) {
+    console.error('[engine] resolve_unit failed for', profile.id, err);
+    console.error('[engine] modifiers sent:', JSON.stringify(modifiers, null, 2));
+    throw err;
+  }
 }

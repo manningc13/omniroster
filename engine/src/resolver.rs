@@ -90,6 +90,11 @@ fn apply_modifier(
         Modifier::DoctrinaImperative { doctrina } => {
             apply_doctrina(doctrina, profile, stats, changes, weapons, ability_notes);
         }
+        Modifier::HaloscreedEnhancement { enhancement, unit_ids } => {
+            apply_haloscreed_enhancement(
+                enhancement, profile, unit_ids, stats, changes, weapons, ability_notes,
+            );
+        }
         Modifier::Stratagem { stratagem_id, unit_id } => {
             if unit_id == &profile.id {
                 apply_stratagem(stratagem_id, profile, stats, changes, weapons, ability_notes);
@@ -97,7 +102,7 @@ fn apply_modifier(
         }
         Modifier::DamageDegradation { unit_id, bracket } => {
             if unit_id == &profile.id {
-                apply_damage_bracket(*bracket, stats, changes);
+                apply_damage_bracket(*bracket, stats, changes, weapons, ability_notes);
             }
         }
     }
@@ -118,19 +123,6 @@ fn apply_doctrina(
             if is_skitarii {
                 stats.bs = stats.bs.improve_roll();
                 changes.bs_changed = true;
-                for w in weapons.iter_mut() {
-                    // Only improve ranged weapon BS
-                    if matches!(
-                        profile.weapons.iter().find(|pw| pw.name == profile.weapons[0].name),
-                        Some(pw) if pw.weapon_type == WeaponType::Ranged
-                    ) {
-                        let improved = w.skill.improve_roll();
-                        if improved != w.skill {
-                            w.skill = improved;
-                            w.skill_changed = true;
-                        }
-                    }
-                }
                 // Improve BS on all ranged weapons
                 for (w, pw) in weapons.iter_mut().zip(profile.weapons.iter()) {
                     if pw.weapon_type == WeaponType::Ranged {
@@ -161,14 +153,12 @@ fn apply_doctrina(
         Doctrina::EliminationVolley => {
             for (w, pw) in weapons.iter_mut().zip(profile.weapons.iter()) {
                 if pw.weapon_type == WeaponType::Ranged {
-                    // Double the attacks for Rapid Fire weapons
                     let has_rapid_fire = pw.keywords.iter().any(|k| k.starts_with("Rapid Fire"));
                     if has_rapid_fire {
                         if let StatValue::Number(n) = w.attacks {
                             w.attacks = StatValue::Number(n * 2);
                             w.attacks_changed = true;
                         }
-                        // Update the keyword to reflect doubled shots
                         w.keywords = w.keywords.iter().map(|k| {
                             if let Some(rest) = k.strip_prefix("Rapid Fire ") {
                                 if let Ok(n) = rest.parse::<u32>() {
@@ -190,48 +180,97 @@ fn apply_doctrina(
     }
 }
 
-fn apply_stratagem(
-    stratagem_id: &str,
-    _profile: &UnitProfile,
+/// Haloscreed Battle Clade — Noospheric Transference enhancement.
+/// Only applies to units currently holding the Halo Override keyword (by ID).
+fn apply_haloscreed_enhancement(
+    enhancement: &HaloscreedEnhancement,
+    profile: &UnitProfile,
+    unit_ids: &[String],
     stats: &mut UnitStats,
-    _changes: &mut StatChanges,
+    changes: &mut StatChanges,
     _weapons: &mut Vec<WeaponOverride>,
     ability_notes: &mut Vec<String>,
 ) {
-    // Placeholder: stratagem resolution will go here as stratagems are added.
-    // Each stratagem_id maps to specific stat/weapon mutations.
-    match stratagem_id {
-        "protector_imperatives_overcharge" => {
-            ability_notes.push("Overcharge: Re-roll hit rolls of 1 this phase.".to_string());
+    if !unit_ids.iter().any(|id| id == &profile.id) {
+        return;
+    }
+
+    match enhancement {
+        HaloscreedEnhancement::ElectromotiveEnergisation => {
+            let new_movement = stats.movement.add_movement(2);
+            if new_movement != stats.movement {
+                stats.movement = new_movement;
+                changes.movement_changed = true;
+            }
+            ability_notes.push(
+                "Electromotive Energisation: +2\" to this unit's Move this turn.".to_string(),
+            );
         }
-        _ => {
-            // Unknown stratagem — no-op, safe to ignore
+        HaloscreedEnhancement::MicroactuatorBracing => {
+            if let StatValue::Number(t) = stats.toughness {
+                stats.toughness = StatValue::Number(t + 1);
+                changes.toughness_changed = true;
+            }
+            ability_notes.push(
+                "Microactuator Bracing: +1 to this unit's Toughness this turn.".to_string(),
+            );
+        }
+        HaloscreedEnhancement::PredationProtocols => {
+            ability_notes.push(
+                "Predation Protocols: This unit can Advance and still declare a Charge this turn."
+                    .to_string(),
+            );
+        }
+        HaloscreedEnhancement::MutedServomotors => {
+            ability_notes.push(
+                "Muted Servomotors: Stealth — enemy units cannot target this unit from more than 12\" away."
+                    .to_string(),
+            );
         }
     }
 }
 
-fn apply_damage_bracket(bracket: u8, stats: &mut UnitStats, _changes: &mut StatChanges) {
-    // Vehicle damage degradation — worsens stats as wounds are lost.
-    // bracket 0 = full health, 1 = middle bracket, 2 = lowest bracket.
-    // Concrete values should come from unit data; this is a generic fallback.
-    match bracket {
-        1 => {
-            stats.movement = stats.movement.worsen_roll();
-            stats.bs = stats.bs.worsen_roll();
-        }
-        2 => {
-            stats.movement = stats.movement.worsen_roll();
-            stats.bs = stats.bs.worsen_roll();
-            stats.ws = stats.ws.worsen_roll();
+fn apply_stratagem(
+    stratagem_id: &str,
+    _profile: &UnitProfile,
+    _stats: &mut UnitStats,
+    _changes: &mut StatChanges,
+    _weapons: &mut Vec<WeaponOverride>,
+    ability_notes: &mut Vec<String>,
+) {
+    match stratagem_id {
+        "protector_imperatives_overcharge" => {
+            ability_notes.push("Overcharge: Re-roll hit rolls of 1 this phase.".to_string());
         }
         _ => {}
+    }
+}
+
+/// 10th edition vehicle damage: when bracket >= 1, all hit rolls are at -1.
+/// Represented by worsening every weapon's skill by one step.
+fn apply_damage_bracket(
+    bracket: u8,
+    _stats: &mut UnitStats,
+    changes: &mut StatChanges,
+    weapons: &mut Vec<WeaponOverride>,
+    ability_notes: &mut Vec<String>,
+) {
+    if bracket >= 1 {
+        for w in weapons.iter_mut() {
+            let worsened = w.skill.worsen_roll();
+            if worsened != w.skill {
+                w.skill = worsened;
+                w.skill_changed = true;
+            }
+        }
+        changes.damaged = true;
+        ability_notes.push("DAMAGED: -1 to all Hit rolls this turn.".to_string());
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::types::*;
 
     fn ranger_profile() -> UnitProfile {
         UnitProfile {
@@ -290,9 +329,7 @@ mod tests {
     #[test]
     fn test_protector_doctrina_improves_bs() {
         let profile = ranger_profile();
-        let modifiers = vec![Modifier::DoctrinaImperative {
-            doctrina: Doctrina::Protector,
-        }];
+        let modifiers = vec![Modifier::DoctrinaImperative { doctrina: Doctrina::Protector }];
         let resolved = resolve_unit(&profile, &modifiers);
         assert_eq!(resolved.stats.bs, StatValue::Roll("2+".to_string()));
         assert!(resolved.stat_changes.bs_changed);
@@ -302,9 +339,7 @@ mod tests {
     #[test]
     fn test_conqueror_doctrina_improves_ws() {
         let profile = ranger_profile();
-        let modifiers = vec![Modifier::DoctrinaImperative {
-            doctrina: Doctrina::Conqueror,
-        }];
+        let modifiers = vec![Modifier::DoctrinaImperative { doctrina: Doctrina::Conqueror }];
         let resolved = resolve_unit(&profile, &modifiers);
         assert_eq!(resolved.stats.ws, StatValue::Roll("3+".to_string()));
         assert!(resolved.stat_changes.ws_changed);
@@ -320,9 +355,7 @@ mod tests {
     #[test]
     fn test_elimination_volley_doubles_rapid_fire_attacks() {
         let profile = ranger_profile();
-        let modifiers = vec![Modifier::DoctrinaImperative {
-            doctrina: Doctrina::EliminationVolley,
-        }];
+        let modifiers = vec![Modifier::DoctrinaImperative { doctrina: Doctrina::EliminationVolley }];
         let resolved = resolve_unit(&profile, &modifiers);
         let galvanic = resolved.weapons.iter().find(|w| w.name == "Galvanic rifle").unwrap();
         assert_eq!(galvanic.attacks, StatValue::Number(4));
@@ -332,11 +365,102 @@ mod tests {
     #[test]
     fn test_enrichment_adds_ability_note() {
         let profile = ranger_profile();
-        let modifiers = vec![Modifier::DoctrinaImperative {
-            doctrina: Doctrina::DataPsalmEnrichment,
-        }];
+        let modifiers = vec![Modifier::DoctrinaImperative { doctrina: Doctrina::DataPsalmEnrichment }];
         let resolved = resolve_unit(&profile, &modifiers);
         assert!(!resolved.active_ability_notes.is_empty());
         assert!(resolved.active_ability_notes[0].contains("Enrichment"));
+    }
+
+    #[test]
+    fn test_haloscreed_energisation_increases_movement_via_json() {
+        // Exercises the real deserialisation path where "6\"" becomes Roll, not Text.
+        let json = r#"{
+            "id":"skitarii-rangers","name":"Rangers","faction":"AdMech",
+            "keywords":["Skitarii"],"points":130,
+            "base_stats":{"movement":"6\"","toughness":3,"save":"4+","wounds":1,
+                          "leadership":"6+","oc":2,"bs":"3+","ws":"4+"},
+            "weapons":[],"abilities":[]
+        }"#;
+        let profile: UnitProfile = serde_json::from_str(json).unwrap();
+        let modifiers = vec![Modifier::HaloscreedEnhancement {
+            enhancement: HaloscreedEnhancement::ElectromotiveEnergisation,
+            unit_ids: vec!["skitarii-rangers".to_string()],
+        }];
+        let resolved = resolve_unit(&profile, &modifiers);
+        assert_eq!(resolved.stats.movement, StatValue::Text("8\"".to_string()));
+        assert!(resolved.stat_changes.movement_changed);
+    }
+
+    #[test]
+    fn test_haloscreed_energisation_increases_movement() {
+        let profile = ranger_profile();
+        let modifiers = vec![Modifier::HaloscreedEnhancement {
+            enhancement: HaloscreedEnhancement::ElectromotiveEnergisation,
+            unit_ids: vec!["skitarii-rangers".to_string()],
+        }];
+        let resolved = resolve_unit(&profile, &modifiers);
+        assert_eq!(resolved.stats.movement, StatValue::Text("8\"".to_string()));
+        assert!(resolved.stat_changes.movement_changed);
+    }
+
+    #[test]
+    fn test_haloscreed_bracing_increases_toughness() {
+        let profile = ranger_profile();
+        let modifiers = vec![Modifier::HaloscreedEnhancement {
+            enhancement: HaloscreedEnhancement::MicroactuatorBracing,
+            unit_ids: vec!["skitarii-rangers".to_string()],
+        }];
+        let resolved = resolve_unit(&profile, &modifiers);
+        assert_eq!(resolved.stats.toughness, StatValue::Number(4));
+        assert!(resolved.stat_changes.toughness_changed);
+    }
+
+    #[test]
+    fn test_haloscreed_does_not_affect_non_ho_units() {
+        let profile = ranger_profile();
+        let modifiers = vec![Modifier::HaloscreedEnhancement {
+            enhancement: HaloscreedEnhancement::MicroactuatorBracing,
+            unit_ids: vec!["some-other-unit".to_string()],
+        }];
+        let resolved = resolve_unit(&profile, &modifiers);
+        assert_eq!(resolved.stats.toughness, StatValue::Number(3));
+        assert!(!resolved.stat_changes.toughness_changed);
+    }
+
+    #[test]
+    fn test_haloscreed_protocols_adds_ability_note() {
+        let profile = ranger_profile();
+        let modifiers = vec![Modifier::HaloscreedEnhancement {
+            enhancement: HaloscreedEnhancement::PredationProtocols,
+            unit_ids: vec!["skitarii-rangers".to_string()],
+        }];
+        let resolved = resolve_unit(&profile, &modifiers);
+        assert!(resolved.active_ability_notes.iter().any(|n| n.contains("Predation")));
+    }
+
+    #[test]
+    fn test_damage_bracket_worsens_weapon_skills() {
+        let profile = ranger_profile();
+        let modifiers = vec![Modifier::DamageDegradation {
+            unit_id: "skitarii-rangers".to_string(),
+            bracket: 1,
+        }];
+        let resolved = resolve_unit(&profile, &modifiers);
+        let galvanic = resolved.weapons.iter().find(|w| w.name == "Galvanic rifle").unwrap();
+        assert_eq!(galvanic.skill, StatValue::Roll("4+".to_string()));
+        assert!(galvanic.skill_changed);
+        assert!(resolved.stat_changes.damaged);
+    }
+
+    #[test]
+    fn test_damage_bracket_zero_has_no_effect() {
+        let profile = ranger_profile();
+        let modifiers = vec![Modifier::DamageDegradation {
+            unit_id: "skitarii-rangers".to_string(),
+            bracket: 0,
+        }];
+        let resolved = resolve_unit(&profile, &modifiers);
+        assert!(!resolved.stat_changes.damaged);
+        assert!(!resolved.weapons[0].skill_changed);
     }
 }

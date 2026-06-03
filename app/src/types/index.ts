@@ -42,9 +42,23 @@ export interface UnitProfile {
   weapons: Weapon[];
   abilities: Ability[];
   points: number;
+  damage_threshold?: number; // wound count at/below which the damage bracket activates
 }
 
-// Modifier types — extend this union as new mechanics are added
+// ── Detachment ────────────────────────────────────────────────────────────────
+
+export type Detachment = 'haloscreed_battleclade';
+
+// ── Haloscreed Battle Clade — Noospheric Transference options ─────────────────
+
+export type HaloscreedEnhancement =
+  | 'electromotive_energisation'  // +2" Move
+  | 'microactuator_bracing'       // +1 Toughness
+  | 'predation_protocols'         // Advance + Charge
+  | 'muted_servomotors';          // Stealth <12"
+
+// ── Modifier types — extend this union as new mechanics are added ─────────────
+
 export type Doctrina =
   | 'protector'
   | 'conqueror'
@@ -53,15 +67,18 @@ export type Doctrina =
 
 export type Modifier =
   | { type: 'doctrina_imperative'; doctrina: Doctrina }
+  | { type: 'haloscreed_enhancement'; enhancement: HaloscreedEnhancement; unit_ids: string[] }
   | { type: 'stratagem'; stratagem_id: string; unit_id: string }
   | { type: 'damage_degradation'; unit_id: string; bracket: number };
 
-// Resolved output from the rules engine
+// ── Resolved output from the rules engine ────────────────────────────────────
+
 export interface StatChanges {
   bs_changed: boolean;
   ws_changed: boolean;
   movement_changed: boolean;
   toughness_changed: boolean;
+  damaged: boolean;
 }
 
 export interface ResolvedWeapon {
@@ -88,6 +105,15 @@ export interface ResolvedUnit {
   weapons: ResolvedWeapon[];
   abilities: Ability[];
   active_ability_notes: string[];
+}
+
+// ── Army roster ───────────────────────────────────────────────────────────────
+
+// A unit slot in the army roster — base profile plus per-slot metadata
+export interface RosterUnit {
+  profile: UnitProfile;
+  haloOverride: boolean;
+  currentWounds: number; // tracks live wounds for vehicles; initialised to base wounds
 }
 
 // Army list types
