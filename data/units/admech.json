@@ -3,16 +3,16 @@
     "id": "skitarii-rangers",
     "name": "Skitarii Rangers",
     "faction": "Adeptus Mechanicus",
-    "keywords": ["Infantry", "Skitarii", "Core"],
-    "points": 130,
+    "keywords": ["Infantry", "Battleline", "Imperium", "Skitarii", "Rangers", "Adeptus Mechanicus"],
+    "points": 85,
     "base_stats": {
       "movement": "6\"",
       "toughness": 3,
       "save": "4+",
       "wounds": 1,
-      "leadership": "6+",
+      "leadership": "7+",
       "oc": 2,
-      "bs": "3+",
+      "bs": "4+",
       "ws": "4+"
     },
     "weapons": [
@@ -21,22 +21,77 @@
         "weapon_type": "ranged",
         "range": "30\"",
         "attacks": 2,
-        "skill": "3+",
+        "skill": "4+",
         "strength": 4,
         "ap": 0,
         "damage": 1,
-        "keywords": ["Rapid Fire 1"]
+        "keywords": []
       },
       {
         "name": "Arc rifle",
         "weapon_type": "ranged",
         "range": "30\"",
         "attacks": 1,
-        "skill": "3+",
+        "skill": "4+",
         "strength": 8,
+        "ap": -1,
+        "damage": "D3",
+        "keywords": ["Anti-Vehicle 4+", "Devastating Wounds", "Rapid Fire 1"]
+      },
+      {
+        "name": "Plasma caliver (standard)",
+        "weapon_type": "ranged",
+        "range": "30\"",
+        "attacks": 2,
+        "skill": "4+",
+        "strength": 7,
         "ap": -2,
+        "damage": 1,
+        "keywords": []
+      },
+      {
+        "name": "Plasma caliver (supercharge)",
+        "weapon_type": "ranged",
+        "range": "30\"",
+        "attacks": 2,
+        "skill": "4+",
+        "strength": 8,
+        "ap": -3,
         "damage": 2,
-        "keywords": ["Rapid Fire 1", "Anti-Vehicle 4+"]
+        "keywords": ["Hazardous"]
+      },
+      {
+        "name": "Transuranic arquebus",
+        "weapon_type": "ranged",
+        "range": "36\"",
+        "attacks": 1,
+        "skill": "4+",
+        "strength": 7,
+        "ap": -2,
+        "damage": "D3",
+        "keywords": ["Heavy", "Precision"]
+      },
+      {
+        "name": "Mechanicus pistol",
+        "weapon_type": "ranged",
+        "range": "12\"",
+        "attacks": 1,
+        "skill": "4+",
+        "strength": 6,
+        "ap": -1,
+        "damage": 1,
+        "keywords": ["Devastating Wounds", "Pistol"]
+      },
+      {
+        "name": "Alpha combat weapon",
+        "weapon_type": "melee",
+        "range": null,
+        "attacks": 2,
+        "skill": "4+",
+        "strength": 5,
+        "ap": -1,
+        "damage": 1,
+        "keywords": []
       },
       {
         "name": "Close combat weapon",
@@ -52,12 +107,12 @@
     ],
     "abilities": [
       {
-        "name": "Grounded Advancements",
-        "description": "Each time this unit shoots, it can target one enemy unit with Overwatch, even if it already shot."
+        "name": "Scouts 6\"",
+        "description": "Before the first battle round begins, this unit can make a Normal move of up to 6\"."
       },
       {
         "name": "Bionics",
-        "description": "Each time a model would lose a wound to a mortal wound, roll one D6: on a 5+, that wound is ignored."
+        "description": "Each time a model in this unit would lose a wound, roll one D6: on a 6, that wound is not lost."
       }
     ]
   },
@@ -65,16 +120,16 @@
     "id": "skitarii-vanguard",
     "name": "Skitarii Vanguard",
     "faction": "Adeptus Mechanicus",
-    "keywords": ["Infantry", "Skitarii", "Core"],
-    "points": 130,
+    "keywords": ["Infantry", "Battleline", "Imperium", "Skitarii", "Vanguard", "Adeptus Mechanicus"],
+    "points": 95,
     "base_stats": {
       "movement": "6\"",
       "toughness": 3,
       "save": "4+",
       "wounds": 1,
-      "leadership": "6+",
+      "leadership": "7+",
       "oc": 2,
-      "bs": "3+",
+      "bs": "4+",
       "ws": "4+"
     },
     "weapons": [
@@ -83,32 +138,397 @@
         "weapon_type": "ranged",
         "range": "18\"",
         "attacks": 3,
-        "skill": "3+",
+        "skill": "4+",
         "strength": 3,
         "ap": 0,
         "damage": 1,
-        "keywords": ["Rad 1"]
+        "keywords": ["Anti-Infantry 4+"]
       },
       {
-        "name": "Arc maul",
+        "name": "Arc rifle",
+        "weapon_type": "ranged",
+        "range": "30\"",
+        "attacks": 1,
+        "skill": "4+",
+        "strength": 8,
+        "ap": -1,
+        "damage": "D3",
+        "keywords": ["Anti-Vehicle 4+", "Devastating Wounds", "Rapid Fire 1"]
+      },
+      {
+        "name": "Plasma caliver (standard)",
+        "weapon_type": "ranged",
+        "range": "30\"",
+        "attacks": 2,
+        "skill": "4+",
+        "strength": 7,
+        "ap": -2,
+        "damage": 1,
+        "keywords": []
+      },
+      {
+        "name": "Plasma caliver (supercharge)",
+        "weapon_type": "ranged",
+        "range": "30\"",
+        "attacks": 2,
+        "skill": "4+",
+        "strength": 8,
+        "ap": -3,
+        "damage": 2,
+        "keywords": ["Hazardous"]
+      },
+      {
+        "name": "Transuranic arquebus",
+        "weapon_type": "ranged",
+        "range": "36\"",
+        "attacks": 1,
+        "skill": "4+",
+        "strength": 7,
+        "ap": -2,
+        "damage": "D3",
+        "keywords": ["Heavy", "Precision"]
+      },
+      {
+        "name": "Mechanicus pistol",
+        "weapon_type": "ranged",
+        "range": "12\"",
+        "attacks": 1,
+        "skill": "4+",
+        "strength": 6,
+        "ap": -1,
+        "damage": 1,
+        "keywords": ["Devastating Wounds", "Pistol"]
+      },
+      {
+        "name": "Alpha combat weapon",
         "weapon_type": "melee",
         "range": null,
         "attacks": 2,
         "skill": "4+",
-        "strength": 6,
+        "strength": 5,
         "ap": -1,
-        "damage": 2,
-        "keywords": ["Anti-Vehicle 4+"]
+        "damage": 1,
+        "keywords": []
+      },
+      {
+        "name": "Close combat weapon",
+        "weapon_type": "melee",
+        "range": null,
+        "attacks": 1,
+        "skill": "4+",
+        "strength": 3,
+        "ap": 0,
+        "damage": 1,
+        "keywords": []
       }
     ],
     "abilities": [
       {
         "name": "Rad-saturation",
-        "description": "While an enemy unit is within Engagement Range, subtract 1 from the Toughness of models in that unit."
+        "description": "Aura: While an enemy unit is within 3\" of this unit, subtract 1 from the Objective Control characteristic of models in that enemy unit (excluding Vehicle models)."
       },
       {
         "name": "Bionics",
-        "description": "Each time a model would lose a wound to a mortal wound, roll one D6: on a 5+, that wound is ignored."
+        "description": "Each time a model in this unit would lose a wound, roll one D6: on a 6, that wound is not lost."
+      }
+    ]
+  },
+  {
+    "id": "sicarian-ruststalkers",
+    "name": "Sicarian Ruststalkers",
+    "faction": "Adeptus Mechanicus",
+    "keywords": ["Infantry", "Imperium", "Skitarii", "Sicarian", "Ruststalkers", "Adeptus Mechanicus"],
+    "points": 80,
+    "base_stats": {
+      "movement": "8\"",
+      "toughness": 4,
+      "save": "4+",
+      "wounds": 2,
+      "leadership": "7+",
+      "oc": 1,
+      "bs": "-",
+      "ws": "4+"
+    },
+    "weapons": [
+      {
+        "name": "Transonic razor and chordclaw",
+        "weapon_type": "melee",
+        "range": null,
+        "attacks": 3,
+        "skill": "4+",
+        "strength": 5,
+        "ap": -2,
+        "damage": 2,
+        "keywords": ["Anti-Infantry 3+", "Precision"]
+      },
+      {
+        "name": "Transonic blades",
+        "weapon_type": "melee",
+        "range": null,
+        "attacks": 5,
+        "skill": "4+",
+        "strength": 5,
+        "ap": -1,
+        "damage": 1,
+        "keywords": ["Devastating Wounds", "Precision"]
+      },
+      {
+        "name": "Transonic blades and chordclaw",
+        "weapon_type": "melee",
+        "range": null,
+        "attacks": 5,
+        "skill": "4+",
+        "strength": 5,
+        "ap": -2,
+        "damage": 1,
+        "keywords": ["Anti-Infantry 3+", "Devastating Wounds", "Precision"]
+      }
+    ],
+    "abilities": [
+      {
+        "name": "Stealth",
+        "description": "Ranged attacks that target this unit subtract 1 from the Hit roll."
+      },
+      {
+        "name": "Optimised Gait",
+        "description": "Add 1 to Advance and Charge rolls made for this unit. While this unit is within 6\" of one or more friendly Adeptus Mechanicus Battleline units, add 2 to those rolls instead."
+      }
+    ]
+  },
+  {
+    "id": "sicarian-infiltrators",
+    "name": "Sicarian Infiltrators",
+    "faction": "Adeptus Mechanicus",
+    "keywords": ["Infantry", "Imperium", "Skitarii", "Sicarian", "Infiltrators", "Adeptus Mechanicus"],
+    "points": 75,
+    "base_stats": {
+      "movement": "8\"",
+      "toughness": 4,
+      "save": "4+",
+      "wounds": 2,
+      "leadership": "7+",
+      "oc": 1,
+      "bs": "4+",
+      "ws": "4+"
+    },
+    "weapons": [
+      {
+        "name": "Stubcarbine",
+        "weapon_type": "ranged",
+        "range": "12\"",
+        "attacks": 3,
+        "skill": "4+",
+        "strength": 4,
+        "ap": 0,
+        "damage": 1,
+        "keywords": ["Pistol"]
+      },
+      {
+        "name": "Flechette blaster",
+        "weapon_type": "ranged",
+        "range": "12\"",
+        "attacks": 5,
+        "skill": "4+",
+        "strength": 3,
+        "ap": 0,
+        "damage": 1,
+        "keywords": ["Pistol"]
+      },
+      {
+        "name": "Power weapon",
+        "weapon_type": "melee",
+        "range": null,
+        "attacks": 4,
+        "skill": "4+",
+        "strength": 4,
+        "ap": -2,
+        "damage": 1,
+        "keywords": []
+      },
+      {
+        "name": "Taser goad",
+        "weapon_type": "melee",
+        "range": null,
+        "attacks": 3,
+        "skill": "4+",
+        "strength": 6,
+        "ap": -1,
+        "damage": 1,
+        "keywords": ["Sustained Hits 2"]
+      }
+    ],
+    "abilities": [
+      {
+        "name": "Infiltrators",
+        "description": "During deployment, this unit can be set up anywhere on the battlefield that is more than 9\" horizontally away from the enemy deployment zone and all enemy models."
+      },
+      {
+        "name": "Neurostatic Interference",
+        "description": "Aura: While an enemy unit is within 6\" of this unit, subtract 1 from Battle-shock and Leadership tests taken for that unit. While this unit is within 6\" of one or more friendly Adeptus Mechanicus Battleline units, subtract 2 instead."
+      },
+      {
+        "name": "Voices in the Code",
+        "description": "At the start of the Fight phase, each enemy unit within Engagement Range of one or more units with this ability must take a Battle-shock test."
+      }
+    ]
+  },
+  {
+    "id": "kataphron-breachers",
+    "name": "Kataphron Breachers",
+    "faction": "Adeptus Mechanicus",
+    "keywords": ["Infantry", "Imperium", "Cult Mechanicus", "Kataphron", "Breachers", "Adeptus Mechanicus"],
+    "points": 160,
+    "base_stats": {
+      "movement": "5\"",
+      "toughness": 7,
+      "save": "3+",
+      "wounds": 3,
+      "leadership": "7+",
+      "oc": 1,
+      "bs": "4+",
+      "ws": "4+"
+    },
+    "weapons": [
+      {
+        "name": "Heavy arc rifle",
+        "weapon_type": "ranged",
+        "range": "30\"",
+        "attacks": 2,
+        "skill": "4+",
+        "strength": 8,
+        "ap": -2,
+        "damage": 3,
+        "keywords": ["Anti-Vehicle 4+", "Rapid Fire 2"]
+      },
+      {
+        "name": "Torsion cannon",
+        "weapon_type": "ranged",
+        "range": "36\"",
+        "attacks": "D3",
+        "skill": "4+",
+        "strength": 6,
+        "ap": -2,
+        "damage": 2,
+        "keywords": ["Anti-Infantry 2+", "Blast"]
+      },
+      {
+        "name": "Arc claw",
+        "weapon_type": "melee",
+        "range": null,
+        "attacks": 4,
+        "skill": "4+",
+        "strength": 5,
+        "ap": -1,
+        "damage": 1,
+        "keywords": ["Anti-Vehicle 4+"]
+      },
+      {
+        "name": "Hydraulic claw",
+        "weapon_type": "melee",
+        "range": null,
+        "attacks": 2,
+        "skill": "4+",
+        "strength": 8,
+        "ap": -2,
+        "damage": 3,
+        "keywords": []
+      }
+    ],
+    "abilities": [
+      {
+        "name": "Doctrina Imperatives",
+        "description": "Each time a model in this unit makes an attack, re-roll a Hit roll of 1. While within 6\" of a friendly Adeptus Mechanicus Battleline unit, re-roll the entire Hit roll instead."
+      }
+    ]
+  },
+  {
+    "id": "kataphron-destroyers",
+    "name": "Kataphron Destroyers",
+    "faction": "Adeptus Mechanicus",
+    "keywords": ["Infantry", "Imperium", "Cult Mechanicus", "Kataphron", "Destroyers", "Adeptus Mechanicus"],
+    "points": 105,
+    "base_stats": {
+      "movement": "5\"",
+      "toughness": 6,
+      "save": "3+",
+      "wounds": 3,
+      "leadership": "7+",
+      "oc": 1,
+      "bs": "4+",
+      "ws": "4+"
+    },
+    "weapons": [
+      {
+        "name": "Heavy grav-cannon",
+        "weapon_type": "ranged",
+        "range": "30\"",
+        "attacks": 4,
+        "skill": "4+",
+        "strength": 6,
+        "ap": -1,
+        "damage": 2,
+        "keywords": ["Anti-Vehicle 2+"]
+      },
+      {
+        "name": "Kataphron plasma culverin (standard)",
+        "weapon_type": "ranged",
+        "range": "36\"",
+        "attacks": 4,
+        "skill": "4+",
+        "strength": 7,
+        "ap": -2,
+        "damage": 1,
+        "keywords": []
+      },
+      {
+        "name": "Kataphron plasma culverin (supercharge)",
+        "weapon_type": "ranged",
+        "range": "36\"",
+        "attacks": 4,
+        "skill": "4+",
+        "strength": 8,
+        "ap": -3,
+        "damage": 2,
+        "keywords": ["Hazardous"]
+      },
+      {
+        "name": "Phosphor blaster",
+        "weapon_type": "ranged",
+        "range": "24\"",
+        "attacks": 1,
+        "skill": "4+",
+        "strength": 5,
+        "ap": 0,
+        "damage": 1,
+        "keywords": ["Ignores Cover", "Rapid Fire 1"]
+      },
+      {
+        "name": "Cognis flamer",
+        "weapon_type": "ranged",
+        "range": "12\"",
+        "attacks": "D6",
+        "skill": "Auto",
+        "strength": 4,
+        "ap": 0,
+        "damage": 1,
+        "keywords": ["Ignores Cover", "Torrent"]
+      },
+      {
+        "name": "Close combat weapon",
+        "weapon_type": "melee",
+        "range": null,
+        "attacks": 2,
+        "skill": "4+",
+        "strength": 5,
+        "ap": 0,
+        "damage": 1,
+        "keywords": []
+      }
+    ],
+    "abilities": [
+      {
+        "name": "Sentinel Directives",
+        "description": "Each time you target this unit with the Fire Overwatch Stratagem, until the end of the phase, each time a model in this unit makes a ranged attack, a hit is scored on an unmodified Hit roll of 5+."
       }
     ]
   },
@@ -116,7 +536,7 @@
     "id": "onager-dunecrawler",
     "name": "Onager Dunecrawler",
     "faction": "Adeptus Mechanicus",
-    "keywords": ["Vehicle", "Walker", "Skitarii"],
+    "keywords": ["Vehicle", "Walker", "Skitarii", "Adeptus Mechanicus"],
     "points": 115,
     "damage_threshold": 6,
     "base_stats": {
@@ -172,6 +592,189 @@
       {
         "name": "Broad Spectrum Data-Tether",
         "description": "Each time you target this unit with a Stratagem, roll one D6: on a 5+, you gain 1 CP."
+      }
+    ]
+  },
+  {
+    "id": "kastelan-robots",
+    "name": "Kastelan Robots",
+    "faction": "Adeptus Mechanicus",
+    "keywords": ["Vehicle", "Walker", "Imperium", "Legio Cybernetica", "Kastelan Robots", "Adeptus Mechanicus"],
+    "points": 180,
+    "base_stats": {
+      "movement": "6\"",
+      "toughness": 9,
+      "save": "2+",
+      "wounds": 7,
+      "leadership": "7+",
+      "oc": 2,
+      "bs": "4+",
+      "ws": "4+"
+    },
+    "weapons": [
+      {
+        "name": "Incendine combustor",
+        "weapon_type": "ranged",
+        "range": "12\"",
+        "attacks": "D6",
+        "skill": "Auto",
+        "strength": 6,
+        "ap": -1,
+        "damage": 1,
+        "keywords": ["Ignores Cover", "Torrent"]
+      },
+      {
+        "name": "Heavy phosphor blaster",
+        "weapon_type": "ranged",
+        "range": "36\"",
+        "attacks": 3,
+        "skill": "4+",
+        "strength": 6,
+        "ap": -1,
+        "damage": 2,
+        "keywords": ["Ignores Cover"]
+      },
+      {
+        "name": "Twin Kastelan phosphor blaster",
+        "weapon_type": "ranged",
+        "range": "24\"",
+        "attacks": 3,
+        "skill": "4+",
+        "strength": 6,
+        "ap": -1,
+        "damage": 1,
+        "keywords": ["Ignores Cover", "Twin-linked"]
+      },
+      {
+        "name": "Twin Kastelan fist",
+        "weapon_type": "melee",
+        "range": null,
+        "attacks": 4,
+        "skill": "4+",
+        "strength": 12,
+        "ap": -2,
+        "damage": 3,
+        "keywords": ["Twin-linked"]
+      },
+      {
+        "name": "Kastelan fist",
+        "weapon_type": "melee",
+        "range": null,
+        "attacks": 4,
+        "skill": "4+",
+        "strength": 12,
+        "ap": -2,
+        "damage": 3,
+        "keywords": []
+      }
+    ],
+    "abilities": [
+      {
+        "name": "Deadly Demise 1",
+        "description": "When this model is destroyed, roll one D6: on a 6, each unit within 6\" suffers 1 mortal wound."
+      },
+      {
+        "name": "Repulsor Grid",
+        "description": "Each time a ranged attack targets this model, on an unmodified saving throw of 6, the attacking unit suffers 1 mortal wound."
+      },
+      {
+        "name": "Robotic Bodyguard",
+        "description": "While this model is within a unit led by a Cybernetica Datasmith, that leader model has the Feel No Pain 4+ ability."
+      }
+    ]
+  },
+  {
+    "id": "tech-priest-dominus",
+    "name": "Tech-Priest Dominus",
+    "faction": "Adeptus Mechanicus",
+    "keywords": ["Infantry", "Character", "Imperium", "Cult Mechanicus", "Tech-Priest", "Dominus", "Adeptus Mechanicus"],
+    "points": 65,
+    "base_stats": {
+      "movement": "6\"",
+      "toughness": 4,
+      "save": "2+",
+      "wounds": 4,
+      "leadership": "7+",
+      "oc": 1,
+      "bs": "3+",
+      "ws": "3+"
+    },
+    "weapons": [
+      {
+        "name": "Volkite blaster",
+        "weapon_type": "ranged",
+        "range": "24\"",
+        "attacks": 3,
+        "skill": "3+",
+        "strength": 5,
+        "ap": 0,
+        "damage": 2,
+        "keywords": ["Devastating Wounds"]
+      },
+      {
+        "name": "Macrostubber pistol",
+        "weapon_type": "ranged",
+        "range": "12\"",
+        "attacks": 5,
+        "skill": "3+",
+        "strength": 4,
+        "ap": 0,
+        "damage": 1,
+        "keywords": ["Pistol"]
+      },
+      {
+        "name": "Eradication ray (dissipated)",
+        "weapon_type": "ranged",
+        "range": "24\"",
+        "attacks": "D3",
+        "skill": "3+",
+        "strength": 6,
+        "ap": -1,
+        "damage": 1,
+        "keywords": []
+      },
+      {
+        "name": "Eradication ray (focused)",
+        "weapon_type": "ranged",
+        "range": "12\"",
+        "attacks": "D3",
+        "skill": "3+",
+        "strength": 6,
+        "ap": -2,
+        "damage": 2,
+        "keywords": []
+      },
+      {
+        "name": "Phosphor serpenta",
+        "weapon_type": "ranged",
+        "range": "18\"",
+        "attacks": 1,
+        "skill": "3+",
+        "strength": 5,
+        "ap": -1,
+        "damage": 2,
+        "keywords": ["Ignores Cover"]
+      },
+      {
+        "name": "Omnissian axe",
+        "weapon_type": "melee",
+        "range": null,
+        "attacks": 4,
+        "skill": "3+",
+        "strength": 6,
+        "ap": -2,
+        "damage": 2,
+        "keywords": []
+      }
+    ],
+    "abilities": [
+      {
+        "name": "Lord of the Machine Cult",
+        "description": "While this model is leading a unit, models in that unit have the Feel No Pain 5+ ability. If that unit has the Electro-Priests keyword, models in that unit have the Feel No Pain 4+ ability instead."
+      },
+      {
+        "name": "Data-spike",
+        "description": "At the start of the Fight phase, you can select one enemy Vehicle unit within Engagement Range of this model's unit and roll one D6: on a 4+, that unit suffers D6 mortal wounds and, until the end of the phase, the Weapon Skill of melee weapons in that unit is worsened by 1."
       }
     ]
   }
