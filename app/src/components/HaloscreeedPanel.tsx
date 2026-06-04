@@ -9,7 +9,7 @@ const ENHANCEMENTS: { value: HaloscreedEnhancement; label: string; hint: string 
 ];
 
 export default function HaloscreeedPanel() {
-  const enhancement    = useArmyStore(s => s.haloscreeedEnhancement);
+  const enhancement    = useArmyStore(s => s.haloscreedEnhancement);
   const hoCount        = useArmyStore(s => s.units.filter(u => u.haloOverride).length);
   const setEnhancement = useArmyStore(s => s.setHaloscreedEnhancement);
 
